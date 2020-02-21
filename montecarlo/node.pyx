@@ -2,7 +2,7 @@ import cython
 from libc.math cimport log, sqrt
 
 
-@cython.freelist(1000)
+@cython.freelist(10000)
 cdef class Node:
     cdef readonly tuple state
     cdef public double win_value
@@ -53,15 +53,20 @@ cdef class Node:
             raise IndexError()
         return best_child
 
+    @cython.cdivision(True)
     cdef double get_score(self):
         cdef double parent_visits
+
+        if self.visits == 0:
+            return float("inf")
+
         parent_visits = self.parent.visits
         discovery_operand = (
             self.discovery_factor *
-            sqrt(log(parent_visits) / (self.visits or 0.00001))
+            sqrt(log(parent_visits) / self.visits)
         )
 
-        win_operand = self.win_value / (self.visits or 1)
+        win_operand = self.win_value / self.visits
 
         return win_operand + discovery_operand
 
