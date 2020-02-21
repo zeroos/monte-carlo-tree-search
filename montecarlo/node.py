@@ -2,6 +2,18 @@ from math import log, sqrt
 
 
 class Node:
+    __slots__ = [
+        'state',
+        'win_value',
+        'policy_value',
+        'visits',
+        'parent',
+        'children',
+        'expanded',
+        'player_number',
+        'discovery_factor',
+    ]
+
     def __init__(self, state):
         self.state = state
         self.win_value = 0
