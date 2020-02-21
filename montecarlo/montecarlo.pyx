@@ -1,7 +1,8 @@
 import random
 
 
-class MonteCarlo:
+cdef class MonteCarlo:
+    cdef dict __dict__
 
     def __init__(self, root_node):
         self.root_node = root_node
@@ -46,7 +47,7 @@ class MonteCarlo:
             current_node = self.root_node
 
             while current_node.expanded:
-                current_node = current_node.get_preferred_child(self.root_node)
+                current_node = current_node.get_preferred_child()
 
             self.expand(current_node)
 
